@@ -3,6 +3,63 @@
 
 #include <iostream>
 
+class Drib {
+    int chiselnik;
+    int znamennik;
+
+public:
+    void setChiselnik(int);
+    void setZnamennik(int);
+
+    Drib sumDrib(Drib);
+    Drib minDrib(Drib);
+    Drib mulDrib(Drib);
+    Drib divDrib(Drib);
+};
+
+void Drib::setChiselnik(int a) {
+    chiselnik = a
+}
+
+void Drib::setZnamennik(int b) {
+    znamennik = b
+}
+
+
+
+Drib Drib::sumDrib(Drib B) {
+     Drib res;
+
+     res.znamennik = znamennik * B.znamennik;
+     res.chiselnik = chiselnik * res.znamennik + B.chiselnik * znamennik;
+
+     return res
+}
+
+Drib Drib::minDrib(Drib B) {
+    Drib res;
+
+    res.znamennik = znamennik * B.znamennik;
+    res.chiselnik = chiselnik * res.znamennik - B.chiselnik * znamennik;
+
+    return res
+}
+
+Drib Drib::mulDrib(Drib B) {
+    Drib res;
+
+    res.znamennik = znamennik * B.znamennik;
+    res.chiselnik = chiselnik * B.chiselnik;
+}
+
+Drib Drib::divDrib(Drib B) {
+    Drib res;
+
+    res.znamennik = znamennik * B.chiselnik;
+    res.chiselnik = chiselnik * B.znamennik;
+}
+
+
 int main()
 {
     std::cout << "Hello World!\n";
