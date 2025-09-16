@@ -4,18 +4,46 @@
 #include <iostream>
 
 class Drib {
+public:
     int chiselnik;
     int znamennik;
 
-public:
+    Drib();
+    Drib(int a, int b);
+
     void setChiselnik(int);
     void setZnamennik(int);
 
     Drib sumDrib(Drib);
-    Drib minDrib(Drib);
+    Drib subDrib(Drib);
     Drib mulDrib(Drib);
     Drib divDrib(Drib);
 };
+
+Drib::Drib() {};
+
+Drib::Drib(int a, int b) {
+    
+    int  c = sproshennya(a, b);
+
+    chiselnik = a / c;
+    znamennik = b / c;
+}
+
+int sproshennya(int x, int y) {
+    int i = x;
+
+    while (i != 0)
+    {
+        if (x % i == 0 && y % i == 0) {
+            return i;
+        }
+        else
+        {
+            i--;
+        }
+    }
+}
 
 void Drib::setChiselnik(int a) {
     chiselnik = a
@@ -33,16 +61,16 @@ Drib Drib::sumDrib(Drib B) {
      res.znamennik = znamennik * B.znamennik;
      res.chiselnik = chiselnik * res.znamennik + B.chiselnik * znamennik;
 
-     return res
+     return Drib a{ res.chiselnik, res.znamennik };
 }
 
-Drib Drib::minDrib(Drib B) {
+Drib Drib::subDrib(Drib B) {
     Drib res;
 
     res.znamennik = znamennik * B.znamennik;
     res.chiselnik = chiselnik * res.znamennik - B.chiselnik * znamennik;
 
-    return res
+    return Drib a{ res.chiselnik, res.znamennik };
 }
 
 Drib Drib::mulDrib(Drib B) {
@@ -50,6 +78,8 @@ Drib Drib::mulDrib(Drib B) {
 
     res.znamennik = znamennik * B.znamennik;
     res.chiselnik = chiselnik * B.chiselnik;
+
+    return Drib a{ res.chiselnik, res.znamennik };
 }
 
 Drib Drib::divDrib(Drib B) {
@@ -57,12 +87,19 @@ Drib Drib::divDrib(Drib B) {
 
     res.znamennik = znamennik * B.chiselnik;
     res.chiselnik = chiselnik * B.znamennik;
+
+    return Drib a{ res.chiselnik, res.znamennik };
 }
 
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Drib a{ 2, 4 };
+    Drib b{ 4, 8 };
+
+    a.mulDrib(b);
+    
+    std::cout << a.chiselnik << " " << a.znamennik;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
