@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 class Drib {
 public:
     int chiselnik;
@@ -10,6 +12,63 @@ public:
 
     Drib();
     Drib(int a, int b);
+
+    friend ostream& operator<< (ostream& out, const Drib& d) {
+        out << d.chiselnik << "/" << d.znamennik;
+        return out;
+    }
+
+    friend istream& operator>> (istream& in, Drib& d) {
+        in >> d.chiselnik;
+        in >> d.znamennik;
+        return in;
+    }
+
+    friend Drib operator+(const Drib& d1, const Drib& d2) {
+        Drib res;
+
+        if (d1.znamennik != d2.znamennik) {
+            res.znamennik = d1.znamennik * d2.znamennik;
+            res.chiselnik = d1.chiselnik * res.znamennik + d2.chiselnik * res.znamennik;
+            return Drib{ res.chiselnik, res.znamennik };
+        }
+        else {
+            res.chiselnik = d1.chiselnik + d2.chiselnik;
+            return Drib{ res.chiselnik, d1.znamennik };
+        }
+    }
+
+    friend Drib operator-(const Drib& d1, const Drib& d2) {
+        Drib res;
+
+        if (d1.znamennik != d2.znamennik) {
+            res.znamennik = d1.znamennik * d2.znamennik;
+            res.chiselnik = d1.chiselnik * res.znamennik - d2.chiselnik * res.znamennik;
+            return Drib{ res.chiselnik, res.znamennik };
+        }
+        else {
+            res.chiselnik = d1.chiselnik - d2.chiselnik;
+            return Drib{ res.chiselnik, d1.znamennik };
+        }
+    }
+    
+    friend bool operator==(const Drib& d1, const Drib& d2) {
+        if (d1.znamennik != d2.znamennik) {
+            int znamennik = d1.znamennik * d2.znamennik;
+            int chiselnik = d1.chiselnik * znamennik;
+        
+            if (chiselnik == d2.chiselnik && znamennik == d2.znamennik) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    friend bool operator!=(const Drib& d1, const Drib& d2) {
+        return !(d1 == d2);
+    }
 
     void setChiselnik(int);
     void setZnamennik(int);
@@ -23,34 +82,16 @@ public:
 Drib::Drib() {};
 
 Drib::Drib(int a, int b) {
-    
-    int  c = sproshennya(a, b);
-
-    chiselnik = a / c;
-    znamennik = b / c;
-}
-
-int sproshennya(int x, int y) {
-    int i = x;
-
-    while (i != 0)
-    {
-        if (x % i == 0 && y % i == 0) {
-            return i;
-        }
-        else
-        {
-            i--;
-        }
-    }
+    chiselnik = a;
+    znamennik = b;
 }
 
 void Drib::setChiselnik(int a) {
-    chiselnik = a
+    chiselnik = a;
 }
 
 void Drib::setZnamennik(int b) {
-    znamennik = b
+    znamennik = b;
 }
 
 
@@ -58,19 +99,24 @@ void Drib::setZnamennik(int b) {
 Drib Drib::sumDrib(Drib B) {
      Drib res;
 
-     res.znamennik = znamennik * B.znamennik;
-     res.chiselnik = chiselnik * res.znamennik + B.chiselnik * znamennik;
-
-     return Drib a{ res.chiselnik, res.znamennik };
+     if(znamennik != B.znamennik) { 
+         res.znamennik = znamennik * B.znamennik; 
+         res.chiselnik = chiselnik * res.znamennik + B.chiselnik * res.znamennik;
+         return Drib{ res.chiselnik, res.znamennik };
+     }
+     else {
+         res.chiselnik = chiselnik + B.chiselnik;
+         return Drib{ res.chiselnik, znamennik };
+     }
 }
 
 Drib Drib::subDrib(Drib B) {
     Drib res;
 
     res.znamennik = znamennik * B.znamennik;
-    res.chiselnik = chiselnik * res.znamennik - B.chiselnik * znamennik;
+    res.chiselnik = chiselnik * res.znamennik - B.chiselnik * res.znamennik;
 
-    return Drib a{ res.chiselnik, res.znamennik };
+    return Drib { res.chiselnik, res.znamennik };
 }
 
 Drib Drib::mulDrib(Drib B) {
@@ -79,7 +125,7 @@ Drib Drib::mulDrib(Drib B) {
     res.znamennik = znamennik * B.znamennik;
     res.chiselnik = chiselnik * B.chiselnik;
 
-    return Drib a{ res.chiselnik, res.znamennik };
+    return Drib{ res.chiselnik, res.znamennik };
 }
 
 Drib Drib::divDrib(Drib B) {
@@ -88,18 +134,27 @@ Drib Drib::divDrib(Drib B) {
     res.znamennik = znamennik * B.chiselnik;
     res.chiselnik = chiselnik * B.znamennik;
 
-    return Drib a{ res.chiselnik, res.znamennik };
+    return Drib{ res.chiselnik, res.znamennik };
 }
 
 
 int main()
 {
-    Drib a{ 2, 4 };
-    Drib b{ 4, 8 };
+    Drib a{ 1, 2 }, b(2, 4);
 
-    a.mulDrib(b);
-    
-    std::cout << a.chiselnik << " " << a.znamennik;
+    if (a == b) {
+        cout << "OK" << endl;
+    }
+    else {
+        cout << "NOT OK" << endl;
+    }
+
+    if (a != b) {
+        cout << "OK" << endl;
+    }
+    else {
+        cout << "NOT OK" << endl;
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
